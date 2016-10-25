@@ -1,68 +1,46 @@
 var fs = require('fs');
 var vsAry = require('./vsAry.js');
 var path = require('path');
+var execSync = require('child_process').execSync;
 
-var dirPath = path.join(__dirname,'docs');
+var dirPath = path.join(__dirname,'temp');
 
 var ofiles = fs.readdirSync(dirPath);
 var tfiles = [
-"layout.md",
-"typography.md",
-"color.md",
-"utilities.md",
-"icon.md",
-"badge.md",
-"input.md",
-"button.md",
-"checkbox.md",
-"radio.md",
-"label.md",
-"table.md",
-"image.md",
-
-"clockpicker.md",	
-"date.md",
-"month.md",
-"time.md",
-"year.md",
-"yearmonth.md",
-"grid.md",	
-"gridCustom.md",
-"loading.md",
-"combobox.md",
-"jsmessage.md",
-"jsmodal.md",
-"autocomplete.md",
-"jspagination.md",
-"jsmessage.md",
-"jstabs.md",
-"jstooltip.md",
-"menu.md",
-"jsprogress.md",
-"tree.md",
-"jsswitch.md",
-"jsrating.md",
-
-"message.md",
-"pagination.md",
-"message.md",
-"tooltip.md",
-"breadcrumb.md",
-"panel.md",
-"dropdown.md",
-"buttongroup.md",
-"inputgroup.md",
-"navbar.md",
-"thumbnail.md",
-"media.md",
-"listgroup.md",
-"gallery.md",
-"statisticWidget.md"
+    'autocomplete',
+    'clockpicker',
+    'combobox',
+    'date',
+    'grid',
+    'gridCustom',
+    'jsmessage',
+    'jsmodal',
+    'jspagination',
+    'jsprogress',
+    'jsrating',
+    'jsswitch',
+    'jstabs',
+    'jstooltip',
+    'loading',
+    'menu',
+    'month',
+    'time',
+    'tree',
+    'year',
+    'yearmonth'
 ];
 
 var moreFiles = vsAry(ofiles, tfiles);
 
-// moreFiles.map(function(file){
-// 	var filePath = path.join(dirPath,file);
-// 	fs.unlinkSync(filePath);
-// })
+// 删除文件 or 文件夹
+moreFiles.map(function(file){
+	var filePath = path.join(dirPath,file);
+  var isDir = fs.statSync(filePath).isDirectory();
+  if(isDir){
+    execSync(`rm -rf ${filePath}`);
+    console.log(`${filePath} -文件夹 已删除`)
+  } else {
+    fs.unlinkSync(filePath);
+    console.log(`${filePath} -文件 已删除`)
+  }
+})
